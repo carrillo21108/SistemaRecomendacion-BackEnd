@@ -1,4 +1,15 @@
+var express = require('express');
+var path = require('path');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
+
+var app = express();
+
 //View Engine
+
+var port = 3000;
+var userRoutes = require('./routes/user.route');
+
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine','ejs');
 
@@ -6,26 +17,17 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(express.static(path.join(__dirname,'public')));
-
-var driver = neo4j.driver('bolt://localhost:7687',neo4j.auth.basic('neo4j','admin123$'));
-var session = driver.session();
-
-app.get('/',function(req,res){
-    session
-        .run('MATCH(n:Actor) RETURN n LIMIT 25')
-        .then(function(result){
-            result.records.forEach(function(record){
-                console.log(record._fields[0].properties);
-            });
-
-            res.render('index');
-        })
-        .catch(function(err){
-            console.log(err);
-        });
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Authorization, X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Allow-Request-Method');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, DELETE');
+    res.header('Allow', 'GET, POST, OPTIONS, PUT, DELETE');
+    next();
 });
 
-app.listen(3000);
+app.listen(port);
 console.log('Server Started on Port 3000');
+
+app.use(userRoutes);
 
 module.exports = app;
