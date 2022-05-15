@@ -15,9 +15,24 @@ function login(req,res){
     })
     .catch(function(err){
         console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
+function create(req,res){
+    var params = req.body;
+    session
+    .run("CREATE ("+params.tag+":User{name:'"+params.name+"',lastname:'"+params.lastname+"',age:"+params.age+",gender:'"+params.gender+"',mail:'"+params.mail+"',password:'"+params.password+"'})")
+    .then(function(){
+        res.send({message:'Usuario creado con exito.'});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
     });
 }
 
 module.exports = {
-    login
+    login,
+    create
 }
