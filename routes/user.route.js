@@ -5,5 +5,6 @@ var api = express.Router();
 
 api.post('/login',userController.login);
 api.post('/createUser',userController.create);
+api.post('/inLikeMovie',userController.like);
 
 module.exports = api;

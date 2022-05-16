@@ -30,7 +30,21 @@ function create(req,res){
     });
 }
 
+function like(req,res){
+    var params = req.body;
+    session
+    .run("MATCH (a:User),(b:Movie) WHERE a.name = '"+params.userName+"' AND b.name = '"+params.movieName+"' CREATE (a)-[:IN_LIKE_MOVIE]->(b)")
+    .then(function(){
+        res.send({message:'Relacion IN_LIKE_MOVIE creada con exito.'});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 module.exports = {
     login,
-    create
+    create,
+    like
 }
