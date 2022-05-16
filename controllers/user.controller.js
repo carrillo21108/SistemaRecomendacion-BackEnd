@@ -1,6 +1,4 @@
-var neo4j = require('neo4j-driver');
-var driver = neo4j.driver('bolt://localhost:7687',neo4j.auth.basic('neo4j','admin123$'));
-var session = driver.session();
+var session = require('../connection');
 var resRecord = [];
 
 function login(req,res){
@@ -24,7 +22,7 @@ function create(req,res){
     session
     .run("CREATE ("+params.tag+":User{name:'"+params.name+"',lastname:'"+params.lastname+"',age:"+params.age+",gender:'"+params.gender+"',mail:'"+params.mail+"',password:'"+params.password+"'})")
     .then(function(){
-        res.send({message:'Usuario creado con exito.'});
+        res.send({message:'Usuario agregado con exito a la DB.'});
     })
     .catch(function(err){
         console.log(err);
