@@ -10,6 +10,7 @@ var app = express();
 var port = 3000;
 var userRoutes = require('./routes/user.route');
 var movieRoutes = require('./routes/movie.route');
+var genreRoutes = require('./routes/genre.route');
 
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine','ejs');
@@ -31,5 +32,6 @@ console.log('Server Started on Port 3000');
 
 app.use(userRoutes);
 app.use(movieRoutes);
+app.use(genreRoutes);
 
 module.exports = app;
