@@ -14,6 +14,20 @@ function create(req,res){
     });
 }
 
+function genre(req,res){
+    var params = req.body;
+    session
+    .run("MATCH (a:Movie),(b:Genre) WHERE a.name = '"+params.movieName+"' AND b.name = '"+params.genreName+"' CREATE (a)-[:IN_GENRE]->(b)")
+    .then(function(){
+        res.send({message:'Relacion IN_GENRE creada con exito.'});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 module.exports = {
-    create
+    create,
+    genre
 }
