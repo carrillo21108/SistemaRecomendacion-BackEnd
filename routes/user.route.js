@@ -5,7 +5,9 @@ var api = express.Router();
 
 api.post('/login',userController.login);
 api.post('/createUser',userController.create);
-api.post('/inLikeMovie',userController.like);
-api.delete('/disLikeMovie',userController.dislike);
+api.post('/inLikeMovie',userController.likeMovie);
+api.delete('/disLikeMovie',userController.dislikeMovie);
+api.post('/inLikeGenre',userController.likeGenre);
+api.delete('/disLikeGenre',userController.dislikeGenre);
 
 module.exports = api;
