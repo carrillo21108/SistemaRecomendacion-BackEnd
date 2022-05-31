@@ -3,7 +3,7 @@ var session = require('../connection');
 function login(req,res){
     var params = req.body;
     var resRecord = [];
-    
+
     session
     .run('MATCH (n:User) WHERE n.mail="'+params.mail+'" AND n.password="'+params.password+'"RETURN n')
     .then(function(result){
@@ -39,9 +39,22 @@ function create(req,res){
 function like(req,res){
     var params = req.body;
     session
-    .run("MATCH (a:User),(b:Movie) WHERE a.name = '"+params.userName+"' AND b.name = '"+params.movieName+"' CREATE (a)-[:IN_LIKE_MOVIE]->(b)")
+    .run("MATCH (a:User),(b:Movie) WHERE a.mail = '"+params.mail+"' AND b.name = '"+params.movieName+"' CREATE (a)-[:IN_LIKE_MOVIE]->(b)")
     .then(function(){
         res.send({message:'Relacion IN_LIKE_MOVIE creada con exito.'});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
+function dislike(req,res){
+    var params = req.body;
+    session
+    .run('MATCH (a:User)-[r:IN_LIKE_MOVIE]->(b:Movie) WHERE a.mail = "'+params.mail+'" AND b.name = "'+params.movieName+'" DELETE r')
+    .then(function(){
+        res.send({message:'Relacion IN_LIKE_MOVIE eliminada con exito.'});
     })
     .catch(function(err){
         console.log(err);
@@ -52,5 +65,6 @@ function like(req,res){
 module.exports = {
     login,
     create,
-    like
+    like,
+    dislike
 }
