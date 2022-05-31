@@ -1,5 +1,4 @@
 var session = require('../connection');
-var resRecord = [];
 
 function create(req,res){
     var params = req.body;

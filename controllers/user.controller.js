@@ -1,15 +1,21 @@
 var session = require('../connection');
-var resRecord = [];
 
 function login(req,res){
+    var params = req.body;
+    var resRecord = [];
+    
     session
-    .run('MATCH(n:User) RETURN n LIMIT 25')
+    .run('MATCH (n:User) WHERE n.mail="'+params.mail+'" AND n.password="'+params.password+'"RETURN n')
     .then(function(result){
         result.records.forEach(function(record){
             resRecord.push(record._fields[0].properties);
         });
-
-        res.send(resRecord);
+        
+        if(resRecord.length==0){
+            res.send({message:"Contraseña y/o correo electronico incorrecto."});
+        }else{
+            res.send(resRecord);
+        }
     })
     .catch(function(err){
         console.log(err);
