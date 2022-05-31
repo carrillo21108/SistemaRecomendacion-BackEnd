@@ -36,7 +36,7 @@ function create(req,res){
     });
 }
 
-function like(req,res){
+function likeMovie(req,res){
     var params = req.body;
     session
     .run("MATCH (a:User),(b:Movie) WHERE a.mail = '"+params.mail+"' AND b.name = '"+params.movieName+"' CREATE (a)-[:IN_LIKE_MOVIE]->(b)")
@@ -49,7 +49,7 @@ function like(req,res){
     });
 }
 
-function dislike(req,res){
+function dislikeMovie(req,res){
     var params = req.body;
     session
     .run('MATCH (a:User)-[r:IN_LIKE_MOVIE]->(b:Movie) WHERE a.mail = "'+params.mail+'" AND b.name = "'+params.movieName+'" DELETE r')
@@ -62,9 +62,38 @@ function dislike(req,res){
     });
 }
 
+function likeGenre(req,res){
+    var params = req.body;
+    session
+    .run("MATCH (a:User),(b:Genre) WHERE a.mail = '"+params.mail+"' AND b.name = '"+params.genreName+"' CREATE (a)-[:IN_LIKE_GENRE]->(b)")
+    .then(function(){
+        res.send({message:'Relacion IN_LIKE_GENRE creada con exito.'});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
+function dislikeGenre(req,res){
+    var params = req.body;
+    session
+    .run('MATCH (a:User)-[r:IN_LIKE_GENRE]->(b:Genre) WHERE a.mail = "'+params.mail+'" AND b.name = "'+params.genreName+'" DELETE r')
+    .then(function(){
+        res.send({message:'Relacion IN_LIKE_GENRE eliminada con exito.'});
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
+
 module.exports = {
     login,
     create,
-    like,
-    dislike
+    likeMovie,
+    dislikeMovie,
+    likeGenre,
+    dislikeGenre
 }
