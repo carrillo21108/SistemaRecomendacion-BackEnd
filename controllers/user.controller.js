@@ -36,6 +36,24 @@ function create(req,res){
     });
 }
 
+function profile(req,res){
+    var params = req.body;
+    session
+    .run("MATCH (n:User) WHERE n.mail='"+params.mail+"' RETURN n")
+    .then(function(result){
+        var resRecord = [];
+        result.records.forEach(function(record){
+            resRecord.push(record._fields[0].properties);
+        });
+
+        res.send(resRecord);
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 function likeMovie(req,res){
     var params = req.body;
     session
@@ -92,8 +110,10 @@ function dislikeGenre(req,res){
 module.exports = {
     login,
     create,
+    profile,
     likeMovie,
     dislikeMovie,
     likeGenre,
     dislikeGenre
+
 }
