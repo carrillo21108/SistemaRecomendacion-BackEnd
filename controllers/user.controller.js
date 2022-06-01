@@ -12,7 +12,7 @@ function login(req,res){
         });
         
         if(resRecord.length==0){
-            res.send({message:"Contraseña y/o correo electronico incorrecto."});
+            res.send({message:"Contraseña y/o correo electrónico incorrecto."});
         }else{
             res.send(resRecord);
         }
