@@ -106,6 +106,29 @@ function dislikeGenre(req,res){
     });
 }
 
+function getLikesUser(req,res){
+    var params = req.body;
+    var resRecord = [];
+
+    session
+    .run('MATCH (a:User)-[r:IN_LIKE_MOVIE]->(b:Movie) WHERE a.mail = "'+params.mail+'" RETURN b')
+    .then(function(result){
+        result.records.forEach(function(record){
+            resRecord.push(record._fields[0].properties);
+        });
+        
+        if(resRecord.length==0){
+            res.send({message:"Peliculas no encontradas."});
+        }else{
+            res.send(resRecord);
+        }
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 
 module.exports = {
     login,
@@ -114,6 +137,6 @@ module.exports = {
     likeMovie,
     dislikeMovie,
     likeGenre,
-    dislikeGenre
-
+    dislikeGenre,
+    getLikesUser
 }
