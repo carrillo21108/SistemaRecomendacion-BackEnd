@@ -9,5 +9,6 @@ api.post('/inLikeMovie',userController.likeMovie);
 api.post('/disLikeMovie',userController.dislikeMovie);
 api.post('/inLikeGenre',userController.likeGenre);
 api.post('/disLikeGenre',userController.dislikeGenre);
+api.get('/profile',userController.profile);
 
 module.exports = api;
