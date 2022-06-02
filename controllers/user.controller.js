@@ -68,7 +68,7 @@ function profile(req,res){
             resRecord.push(record._fields[0].properties);
         });
 
-        res.send(resRecord);
+        res.send(resRecord[0]);
     })
     .catch(function(err){
         console.log(err);
