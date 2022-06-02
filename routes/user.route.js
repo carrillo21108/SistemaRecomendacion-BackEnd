@@ -11,5 +11,6 @@ api.post('/inLikeGenre',userController.likeGenre);
 api.post('/disLikeGenre',userController.dislikeGenre);
 api.get('/profile',userController.profile);
 api.get('/getLikesUser',userController.getLikesUser);
+api.put('/updateUser',userController.updateUser);
 
 module.exports = api;
