@@ -71,9 +71,33 @@ function genreRecommendation(req,res){
     });
 }
 
+function userRecommendation(req,res){
+    var resRecord = [];
+    var params = req.body;
+
+    session
+    .run("MATCH movies = (a:User)-[:IN_LIKE_GENRE]->(f:Genre)<-[:IN_LIKE_GENRE]-(b:User)-[:IN_LIKE_MOVIE]->(c:Movie) WHERE a.mail='"+params.mail+"' RETURN DISTINCT c")
+    .then(function(result){
+        result.records.forEach(function(record){
+            resRecord.push(record._fields[0].properties);
+        });
+        
+        if(resRecord.length==0){
+            res.send({message:"Peliculas no encontradas."});
+        }else{
+            res.send(resRecord);
+        }
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 module.exports = {
     create,
     genre,
     getMovies,
-    genreRecommendation
+    genreRecommendation,
+    userRecommendation
 }
