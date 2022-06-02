@@ -3,7 +3,7 @@ var session = require('../connection');
 function create(req,res){
     var params = req.body;
     session
-    .run("CREATE ("+params.tag+":Movie{name:'"+params.name+"',api_id:'"+params.api_id+"'})")
+    .run("CREATE ("+params.tag+":Movie{name:'"+params.name+"',api_id:"+params.api_id+"})")
     .then(function(){
         res.send({message:'Pelicula agregada con exito a la DB.'});
     })
