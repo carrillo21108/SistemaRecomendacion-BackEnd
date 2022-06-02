@@ -23,6 +23,28 @@ function login(req,res){
     });
 }
 
+function updateUser(req,res){
+    var params = req.body;
+    var resRecord = [];
+    session
+    .run("MATCH (n:User) WHERE n.mail = '"+params.currentMail+"' SET n.mail = '"+params.mail+"', n.password='"+params.password+"', n.age = "+params.age+", n.gender='"+params.gender+"' RETURN n")
+    .then(function(result){
+        result.records.forEach(function(record){
+            resRecord.push(record._fields[0].properties);
+        });
+        
+        if(resRecord.length==0){
+            res.send({message:'Usuario no actualizado'});
+        }else{
+            res.send(resRecord);
+        }
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 function create(req,res){
     var params = req.body;
     session
@@ -162,5 +184,6 @@ module.exports = {
     likeGenre,
     dislikeGenre,
     getLikesUser,
-    getLikeUserMovie
+    getLikeUserMovie,
+    updateUser
 }
