@@ -129,6 +129,29 @@ function getLikesUser(req,res){
     });
 }
 
+function getLikeUserMovie(req,res){
+    var params = req.body;
+    var resRecord = [];
+
+    session
+    .run('MATCH (a:User)-[r:IN_LIKE_MOVIE]->(b:Movie) WHERE a.mail = "'+params.mail+'" AND b.name = "'+params.movieName+'" RETURN b')
+    .then(function(result){
+        result.records.forEach(function(record){
+            resRecord.push(record._fields[0].properties);
+        });
+        
+        if(resRecord.length==0){
+            res.send({message:"Pelicula sin like de usuario."});
+        }else{
+            res.send({message:"Pelicula con like de usuario."});
+        }
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send({message:'Error general'});
+    });
+}
+
 
 module.exports = {
     login,
@@ -138,5 +161,6 @@ module.exports = {
     dislikeMovie,
     likeGenre,
     dislikeGenre,
-    getLikesUser
+    getLikesUser,
+    getLikeUserMovie
 }
