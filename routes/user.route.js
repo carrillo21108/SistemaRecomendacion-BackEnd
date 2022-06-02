@@ -9,9 +9,9 @@ api.post('/inLikeMovie',userController.likeMovie);
 api.post('/disLikeMovie',userController.dislikeMovie);
 api.post('/inLikeGenre',userController.likeGenre);
 api.post('/disLikeGenre',userController.dislikeGenre);
-api.get('/profile',userController.profile);
+api.post('/profile',userController.profile);
 api.post('/getLikesUser',userController.getLikesUser);
 api.post('/getLikeUserMovie',userController.getLikeUserMovie);
-api.put('/updateUser',userController.updateUser);
+api.post('/updateUser',userController.updateUser);
 
 module.exports = api;
