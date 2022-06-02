@@ -17,7 +17,7 @@ function getGenres(req,res){
     var resRecord = [];
 
     session
-    .run('match (n:Genre) return n')
+    .run('MATCH (n:Genre) RETURN n')
     .then(function(result){
         result.records.forEach(function(record){
             resRecord.push(record._fields[0].properties);
